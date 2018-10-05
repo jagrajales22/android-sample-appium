@@ -1,9 +1,7 @@
-package com.yellowpepper;
+package com.vbanthia.androidsampleapp;
 
 
 import com.github.javafaker.Faker;
-import com.yellowpepper.Pages.Cart;
-import com.yellowpepper.Pages.Stores;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -13,124 +11,82 @@ import org.testng.annotations.Test;
  */
 public class AppTest extends BaseSetup {
 
-    protected Oxxo app;
+    protected AndroidSampleApp app;
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private String pinCode;
-    private String creditCardNumber;
-    private String creditCardExpirationDate;
-    private String creditCardCvv;
-    private int selectedStore;
-    private String sku;
-    private int addingProductQuantity;
+    private String firstOperand;
+    private String secondOperand;
+
 
     @BeforeTest
-    public void setUpOxxo() {
-        app = new Oxxo(getAppiumDriver());
+    public void setUpAndroidSampleApp() {
+        app = new AndroidSampleApp(getAppiumDriver());
     }
 
     @Test
-    public void newRegisteredUserCheckout() {
+    public void addition() {
 
-        // Arrange: Test data generation for user registration
-
+        // Arrange: Test data generation
         setUpData();
 
-        //Act: Test flow for user registration after home screen
-        app.startPage().newUser();
+        //Act: Test flow for addition operation
+        app.startPage().setOperands(firstOperand, secondOperand);
 
-        app.tutorialPage().signUp();
+        app.startPage().doAddition();
 
-        app.userRegistrationPage().userFullRegistration(firstName, lastName, email, phoneNumber);
-
-        app.pinPage().createNewPin(pinCode);
-
-        app.userRegistrationPage().clickNextButton();
-        app.userRegistrationPage().clickAcceptButton();
-
-        app.creditCardPage().creditCardRegistration(creditCardNumber, creditCardExpirationDate, creditCardCvv);
-
-        app.storesPage().selectStore(selectedStore);
-
-        app.productScanningPage().productManualInput(sku);
-
-        app.cartPage().increaseProductQuantity(addingProductQuantity);
-        app.cartPage().checkout();
-
-        //Assert:
-
-        app.paymentResponsePage().checkTransactionWasApproved();
-
-        app.paymentResponsePage().goodRating();
-        app.storesPage().myAccount();
-
-        app.accountPage().logOut();
+        //Assert: Make sure result corresponds to the addition of the operands
+        app.startPage().checkAddition(firstOperand, secondOperand);
     }
 
     @Test
-    public void newGuestUserCheckout() {
+    //Note: This test will fail since the operation result is like addition operation was selected
+    public void substraction() {
 
-        // Arrange: Test data generation for user registration
-
+        // Arrange: Test data generation
         setUpData();
 
-        //Act: Test flow for user registration after home screen
-        app.startPage().newUser();
+        //Act: Test flow for substraction operation
+        app.startPage().setOperands(firstOperand, secondOperand);
 
-        app.tutorialPage().skip();
+        app.startPage().doSubstraction();
 
-        app.storesPage().selectStore(selectedStore);
+        //Assert: Make sure result corresponds to the substraction of the operands
+        app.startPage().checkSubstraction(firstOperand, secondOperand);
+    }
 
-        app.productScanningPage().productManualInput(sku);
+    @Test
+    public void multiplication() {
 
-        app.cartPage().increaseProductQuantity(addingProductQuantity);
-        app.cartPage().checkout();
+        // Arrange: Test data generation
+        setUpData();
 
-        app.startPage().newUser();
+        //Act: Test flow for multiplication operation
+        app.startPage().setOperands(firstOperand, secondOperand);
 
-        app.tutorialPage().signUp();
+        app.startPage().doMultiplication();
 
-        app.userRegistrationPage().userFullRegistration(firstName, lastName, email, phoneNumber);
+        //Assert: Make sure result corresponds to the multiplication of the operands
+        app.startPage().checkMultiplication(firstOperand, secondOperand);
+    }
 
-        app.pinPage().createNewPin(pinCode);
+    @Test
+    public void division() {
 
-        app.userRegistrationPage().clickNextButton();
-        app.userRegistrationPage().clickAcceptButton();
+        // Arrange: Test data generation
+        setUpData();
 
-        app.creditCardPage().creditCardRegistration(creditCardNumber, creditCardExpirationDate, creditCardCvv);
+        //Act: Test flow for division operation
+        app.startPage().setOperands(firstOperand, secondOperand);
 
-        app.storesPage().selectStore(selectedStore);
+        app.startPage().doDivision();
 
-        app.productScanningPage().goToCart();
-
-        app.cartPage().checkout();
-
-        //Assert:
-
-        app.paymentResponsePage().checkTransactionWasApproved();
-
-        app.paymentResponsePage().goodRating();
-        app.storesPage().myAccount();
-
-        app.accountPage().logOut();
+        //Assert: Make sure result corresponds to the division of the operands
+        app.startPage().checkDivision(firstOperand, secondOperand);
     }
 
     public void setUpData() {
         Faker faker = new Faker();
-        this.firstName = faker.name().firstName();
-        this.lastName = faker.name().lastName();
-        this.email = faker.internet().emailAddress();
-        this.phoneNumber = faker.number().digits(13);
-        this.pinCode = "505050"; // I will fix it for the moment
-        this.creditCardNumber = "4242424242424242"; // fixed, but there are services for BIN generation
-        this.creditCardExpirationDate = "12/32";
-        this.creditCardCvv = "123";
-        this.selectedStore = faker.number().numberBetween(1, Stores.REGISTERED_STORES);
-        this.sku = "123456";
-        this.addingProductQuantity = faker.number().numberBetween(0, Cart.MAXIMUM_ALLOWED_ADDITIONS);
+        this.firstOperand = Double.toString(faker.number().randomDouble(2, 0, 256));
+        this.secondOperand = Double.toString(faker.number().randomDouble(2, 0, 256));
     }
 
 }

@@ -1,4 +1,4 @@
-package com.yellowpepper;
+package main.java.com.vbanthia.androidsampleapp;
 
 /**
  * Hello world!

@@ -1,4 +1,4 @@
-package com.yellowpepper;
+package com.vbanthia.androidsampleapp;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
@@ -18,11 +18,11 @@ public class BaseSetup {
 
     private static AppiumDriver driver;
     private static final String PLATFORM_NAME = "Android";
-    private static final String APP_ACTIVITY = "com.yellowpepper.oxxo.ui.splash.SplashActivity";
-    private static final String APP_PACKAGE = "com.yellowpepper.oxxo.dev";
+    private static final String APP_ACTIVITY = "com.vbanthia.androidsampleapp.MainActivity";
+    private static final String APP_PACKAGE = "com.vbanthia.androidsampleapp";
     private static final String DEVICE_NAME = "emulator-5554";
     private static final String LOCAL_HOST = "http://127.0.0.1:4723/wd/hub";
-    private static final String PLATFORM_VERSION = "7.0";
+    private static final String PLATFORM_VERSION = "7.1.1";
 
 
     @BeforeSuite

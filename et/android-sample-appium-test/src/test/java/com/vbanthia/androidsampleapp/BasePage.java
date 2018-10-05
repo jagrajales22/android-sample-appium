@@ -1,10 +1,9 @@
-package com.yellowpepper;
+package com.vbanthia.androidsampleapp;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.HideKeyboardStrategy;
@@ -24,22 +23,6 @@ public class BasePage extends BaseSetup {
 
         this.driver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-    }
-
-    public void hideKeyboard() {
-        explicitWait(500L);
-        if (isAndroid()) {
-            AndroidDriver androidDriver = (AndroidDriver) driver;
-            if (!androidDriver.isKeyboardShown()) {
-                return;
-            }
-            androidDriver.navigate().back();
-        }
-        if (isIOS()) {
-            IOSDriver iosDriver = (IOSDriver) driver;
-            iosDriver.hideKeyboard(HideKeyboardStrategy.PRESS_KEY, "Done");
-        }
-        explicitWait(500L);
     }
 
     public boolean isAndroid() {
@@ -70,45 +53,10 @@ public class BasePage extends BaseSetup {
         element.click();
     }
 
-    public void swipeDown() {
-        new TouchAction(driver).press(PointOption.point(550, 640)).waitAction().moveTo(PointOption.point(550, 60)).release().perform();
-
-    }
-
-    public void submit() {
-        explicitWait(500L);
-        if (isAndroid()) {
-            AndroidDriver androidDriver = (AndroidDriver) driver;
-            if (!androidDriver.isKeyboardShown()) {
-                return;
-            }
-            androidDriver.navigate().back();
-        }
-    }
-
     public void type(MobileElement element, String text) {
         explicitWait(1000L);
         new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(element));
         element.sendKeys(text);
-    }
-
-    public String getText(MobileElement element) {
-        explicitWait(500L);
-        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(element));
-        return element.getText();
-    }
-
-    public boolean isEnableElement(MobileElement element) {
-        explicitWait(500L);
-        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(element));
-        Assert.assertTrue(element.isEnabled());
-        return true;
-    }
-
-    public void assertText(MobileElement element, String text) {
-        explicitWait(500L);
-        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(element));
-        Assert.assertEquals(element.getText(), text);
     }
 
     public void explicitWait(Long millis) {
